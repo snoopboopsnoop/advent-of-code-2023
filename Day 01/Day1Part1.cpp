@@ -19,7 +19,6 @@ int main() {
     
     // read sum of calibration document values
     while(in) {
-        int currElf = 0;
         while(getline(in, line)) {
             if(line == "") break;
 
