@@ -14,10 +14,11 @@ int main() {
     // broke
     if(!in) cerr << "oops tehre was a fucky wucky" << endl;
 
+    const int maxRed = 12, maxGreen = 13, maxBlue = 14;
     string game;
     int gameNum = 0;
     int validGames = 0;
-    
+
     // analyze each game
     while(in) {
         while(getline(in, game)) {
@@ -46,9 +47,9 @@ int main() {
                     blockstream >> color;
 
                     // check that block counts are valid
-                    if(color == "blue" && num > 14) valid = false;
-                    else if(color == "green" && num > 13) valid = false;
-                    else if(color == "red" && num > 12) valid = false;
+                    if(color == "red" && num > maxRed) valid = false;
+                    else if(color == "green" && num > maxGreen) valid = false;
+                    else if(color == "blue" && num > maxBlue) valid = false;
                 }
             }
 
