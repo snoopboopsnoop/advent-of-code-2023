@@ -14,7 +14,6 @@ int main() {
     if(!in) cerr << "oops tehre was a fucky wucky" << endl;
 
     string line;
-
     int sum = 0;
     
     // read sum of calibration document values

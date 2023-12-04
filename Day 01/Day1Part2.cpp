@@ -14,8 +14,7 @@ int main() {
     // broke
     if(!in) cerr << "oops tehre was a fucky wucky" << endl;
 
-    string line;
-
+    
     string list[9] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 
     string first;
@@ -24,6 +23,7 @@ int main() {
     int lastPos = -1;
 
     string combined;
+    string line;
     int sum = 0;
 
     // read sum of calibration document values
