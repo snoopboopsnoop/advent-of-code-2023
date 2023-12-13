@@ -6,11 +6,11 @@
 #include <sstream>
 #include <algorithm>
 
+#include "Node.cpp"
+
 using namespace std;
 
 // uh oh i haven't programmed in c++ since may
-
-bool valid(const string& check, const vector<int>& order);
 
 int main() {
     // input stream
@@ -22,8 +22,6 @@ int main() {
     string line;
     int sum = 0;
 
-    
-    
     // read sum of calibration document values
     while(in) {
         while(getline(in, line)) {
@@ -31,84 +29,49 @@ int main() {
             int validCount = 0;
 
             if(line == "") break;
-            
+
+            //cout << "base springs: " << line << endl;
             string springs = line.substr(0, line.find(' '));
+            springs = springs.substr(line.find_first_not_of('.'));
+            //cout << "springs w/ top chopped: " << springs << "end" << endl;
+            // cout << springs << endl;
+            //cout << "last char at " << springs.find_last_not_of('.') << endl;
+            springs = springs.substr(0, springs.find_last_not_of('.') + 1);
+            //cout << "springs w/ end chopped: " << springs << "end" << endl;
             string orderStr = line.substr(line.find(' ') + 1);
             istringstream orderIn(orderStr);
 
             string intermediate;
-            int sumSprings = 0;
+            int minChar = 0;
             while(getline(orderIn, intermediate, ',')) {
                 int temp = stoi(intermediate);
                 order.push_back(temp);
-                sumSprings += temp;
+                minChar += temp + 1;
             }
-            //cout << "sum: " << sumSprings << endl;
+            --minChar;
 
-            int definites = 0;
-            int possibleSpaces = 0;
+            Node::order = order;
+            Node::springs = springs;
 
-            int brokens = 0;
-            
-            for(char c : springs) {
-                if(c == '#') {
-                    definites++;
-                }
-                else if(c == '?') possibleSpaces++;
-            }
-
-            //cout << springs << endl;
+            // cout << Node::springs << endl;
             // for(int i : order) {
-            //     cout << i << ", ";
-            // }
-            // cout << endl << endl;
-
-            vector<int> perms(possibleSpaces);
-            fill_n(perms.rbegin(), sumSprings - definites, 1);
-
-            // for(int i : perms) {
-            //     cout << i << ", ";
+            //     cout << i << ",";
             // }
             // cout << endl;
 
-            do {
-                string check = springs;
-                for(int i : perms) {
-                    check[check.find('?')] = (i == 0) ? '.' : '#';
-                }
+            int temp = Node::arrangements;
 
-                //cout << "checking string: " << check << endl; 
-                if(valid(check, order)) {
-                    //cout << "valid pair " << endl;
-                    ++sum;
-                    validCount++;
-                }
-            }
-            while(next_permutation(perms.begin(), perms.end()));
+            Node node = Node(0, 0, minChar);
+            //node.findNext();
 
-            //cout << validCount << " valid perms" << endl;
-            //cout << endl;
+            int total = Node::arrangements - temp;
+            
+            cout << total << " perms" << endl;
+            //cout << Node::arrangements << " total arrangements" << endl << endl;
         }
     }
 
-    cout << "Sum of calibration values: " << sum << endl;
+    cout << "Sum of calibration values: " << Node::arrangements << endl;
 
     return 0;
-}
-
-bool valid(const string& check, const vector<int>& order) {
-    int pos = 0;
-    for(int i : order) {
-        //cout << "checking for " << i << endl;
-        for(int j = pos; j < check.size(); ++j) {
-            if(check[j] == '.') continue;
-            if(find(check.begin() + j, check.begin() + j + i, '.') != check.begin() + j + i) return false;
-            else {
-                if(j + i < check.size() && check[j+i] != '.') return false;
-            }
-            pos = j + i + 1;
-            break;
-        }
-    }
-    return true;
 }
