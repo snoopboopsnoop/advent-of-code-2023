@@ -97,32 +97,27 @@ int main() {
 void simplify(vector<int>& order, string& springs) {
     // from left
     int curr = order.front();
+    int front = springs.front();
     int end = springs.find('.');
+    int first = springs.find('#');
+    int last = springs.find_last_of('#');
 
-    if(end == curr) {
-        springs.erase(0, end + 1);
-        order.erase(order.begin());
+    if(first < end - last - 1) {
+        // last - (curr - )
+        fill(springs.begin() + first, springs.begin() + curr - 1, '#');
     }
-    else {
-        auto found = find(springs.begin(), springs.begin() + curr, '#');
-        if(found != springs.begin() + curr) {
-            fill(found, springs.begin() + curr, '#');
-        }
+    else { 
+        fill(springs.begin() + end - curr, springs.begin() + last, '#');
     }
-    
-    // from right
-    curr = order.back();
-    end = springs.rfind('.');
-    cout << "curr: " << curr << ", end: " << end << endl;
 
-    if(end == springs.size() -curr) {
-        springs.erase(end - 1, curr);
-        order.erase(order.end() - 1);
-    }
-    else {
-        auto found = find(springs.rbegin(), springs.rbegin() + curr, '#');
-        if(found != springs.rbegin() + curr) {
-            fill(found, springs.rbegin() + curr, '#');
-        }
-    }
+    // if(end == curr) {
+    //     springs.erase(0, end + 1);
+    //     order.erase(order.begin());
+    // }
+    // else {
+    //     auto found = find(springs.begin(), springs.begin() + curr, '#');
+    //     if(found != springs.begin() + curr) {
+    //         fill(found, springs.begin() + curr, '#');
+    //     }
+    // }
 }
