@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <bitset>
 #include <sstream>
 #include <algorithm>
 
@@ -10,7 +9,7 @@
 
 using namespace std;
 
-// uh oh i haven't programmed in c++ since may
+// this one is the core memory aoc day
 
 int main() {
     // input stream
@@ -22,55 +21,44 @@ int main() {
     string line;
     int sum = 0;
 
-    // read sum of calibration document values
+    // read and analyze each spring record
     while(in) {
         while(getline(in, line)) {
-            Node::nodes.clear();
-            vector<int> order;
-            int validCount = 0;
-
             if(line == "") break;
 
-            //cout << "base springs: " << line << endl;
+            Node::nodes.clear();
+            vector<int> order;
+
+            // do some formatting on input: remove trailing . from spring record
             string springs = line.substr(0, line.find(' '));
             springs = springs.substr(line.find_first_not_of('.'));
-            //cout << "springs w/ top chopped: " << springs << "end" << endl;
-            // cout << springs << endl;
-            //cout << "last char at " << springs.find_last_not_of('.') << endl;
             springs = springs.substr(0, springs.find_last_not_of('.') + 1);
-            //cout << "springs w/ end chopped: " << springs << "end" << endl;
             string orderStr = line.substr(line.find(' ') + 1);
             istringstream orderIn(orderStr);
 
+            // put number order in vector
             string intermediate;
-            int minChar = 0;
             while(getline(orderIn, intermediate, ',')) {
                 int temp = stoi(intermediate);
                 order.push_back(temp);
-                minChar += temp + 1;
             }
-            --minChar;
 
             Node::order = order;
             Node::springs = springs;
 
-            // cout << Node::springs << endl;
-            // for(int i : order) {
-            //     cout << i << ",";
-            // }
-            // cout << endl;
+            cout << Node::springs;
 
             int temp = sum;
-
-            Node node = Node(0, 0, minChar);
+            
+            Node node = Node(0, 0);
             sum += node.findNext();
             
-            cout << sum - temp << " perms" << endl;
-            //cout << Node::arrangements << " total arrangements" << endl << endl;
+            temp = sum - temp;
+            cout << " -> " << temp << ((temp != 1) ? " arrangements" : " arrangement") << endl;
         }
     }
 
-    cout << "Sum of calibration values: " << sum << endl;
+    cout << endl << sum << " total arrangements" << endl;
 
     return 0;
 }
