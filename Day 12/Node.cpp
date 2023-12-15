@@ -9,18 +9,20 @@
 using namespace std;
 
 struct Node {
-    static long long arrangements;
     static vector<int> order;
     static string springs;
+    static vector<Node> nodes;
 
     int num; // which number to look for
     int orderPos;
     int springPos; // which index of the string does this node start with
     int sumGroups; // keeps track of minimum number of characters required
+    int localSum; // arrangements from this node
 
     Node(int paramOPos, int paramSPos, int sum) {
         //nodes.erase(nodes.begin());
 
+        localSum = 0;
         orderPos = paramOPos;
         num = order[orderPos];
         springPos = paramSPos;
@@ -28,17 +30,17 @@ struct Node {
         else sumGroups = sum;
 
         // for(int i = 0; i < orderPos; ++i) {
-        //     cout << "\t";
+        //     cout << " ";
         // }
-        // cout << "new Node created looking for index " << orderPos <<  " in order vector(" << num << "), in string " << springs.substr(springPos) << endl;
-
-        if(!(springs.size() - springPos < sumGroups)) findNext();
+        // cout << springs.substr(springPos) << " (" << num << ")" << endl;
         //if(currArrange != 0) cout << currArrange << " local arrangements" << endl;
         //cout << endl;
     }
 
 
-    void findNext() {
+    int findNext() {
+        if(springs.size() - springPos < sumGroups) return 0;
+
         size_t lineSize = springs.size();
         for(int i = springPos; i + num <= lineSize; ++i) {
             //cout << "spring size: " << springs.size() << endl;
@@ -60,7 +62,7 @@ struct Node {
                                     //     cout << " ";
                                     // }
                                     // cout << "found path" << endl;
-                                    ++arrangements;
+                                    ++localSum;
                                 }
                                 if(springs[i] == '#') break;
                                 continue;
@@ -74,6 +76,7 @@ struct Node {
                             if((temp + order[orderPos + 1]) <= lineSize) {
                                 //cout << "new string starts at pos " << temp << endl;
                                 Node node = Node(orderPos + 1, temp, sumGroups);
+                                localSum += node.findNext();
                             }
                         }
                     }
@@ -81,9 +84,11 @@ struct Node {
                 if(springs[i] == '#') break;
             }
         }
+        return localSum;
     }
+    
 };
 
-long long Node::arrangements = 0;
 vector<int> Node::order;
 string Node::springs;
+vector<Node> Node::nodes;

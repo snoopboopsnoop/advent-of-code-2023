@@ -20,7 +20,7 @@ int main() {
     if(!in) cerr << "oops tehre was a fucky wucky" << endl;
 
     string line;
-    int sum = 0;
+    long long sum = 0;
 
     // read sum of calibration document values
     while(in) {
@@ -37,19 +37,29 @@ int main() {
             string orderStr = line.substr(line.find(' ') + 1);
             
 
-            // string copySprings = springs;
-            // string copyOrder = orderStr;
-            // for(int i = 0; i < 4; ++i) {
-            //     springs += '?' + copySprings;
-            //     orderStr += ',' + copyOrder;
-            // }
+            string copySprings = springs;
+            string copyOrder = orderStr;
+            for(int i = 0; i < 4; ++i) {
+                springs += '?' + copySprings;
+                orderStr += ',' + copyOrder;
+            }
 
             springs = springs.substr(line.find_first_not_of('.'));
             //cout << "springs after snipping ends " << springs << "end" << endl;
-            // cout << springs << endl;
+            //cout << springs << endl;
             //cout << "last char at " << springs.find_last_not_of('.') << endl;
             springs = springs.substr(0, springs.find_last_not_of('.') + 1);
-            cout << "springs after snipping ends " << springs << "end" << endl;
+            //cout << "springs after snipping ends " << springs << "end" << endl;
+
+            for(int i = 0; i < springs.size(); ++i) {
+                char c = springs[i];
+                if(c == '.') {
+                    int pos = springs.find_first_not_of('.', i);
+                    if(pos != i + 1) {
+                        springs.erase(i+1, pos - i - 1);
+                    }
+                }
+            }
 
             istringstream orderIn(orderStr);
 
@@ -65,27 +75,31 @@ int main() {
             Node::order = order;
             Node::springs = springs;
 
-            cout << Node::springs << endl;
+            
+            for(char& c : springs) {
+                if(c == '#') c = '0';
+                else if(c == '.') c= '1';
+            }
+
+            cout << springs << endl;
             for(int i : order) {
                 cout << i << ",";
             }
             cout << endl;
 
-            int temp = Node::arrangements;
+            long long temp = sum;
 
             Node node = Node(0, 0, minChar);
-            //node.findNext();
-
-            int total = Node::arrangements - temp;
+            sum += node.findNext();
             
-            cout << "row " << row << ": " << total << " perms" << endl;
+            cout << "row " << row << ": " << sum - temp << " perms" << endl;
             //cout << Node::arrangements << " total arrangements" << endl << endl;
             ++row;
             cout << endl;
         }
     }
 
-    cout << "Sum of calibration values: " << Node::arrangements << endl;
+    cout << "Sum of calibration values: " << sum << endl;
 
     return 0;
 }

@@ -59,19 +59,17 @@ int main() {
             // }
             // cout << endl;
 
-            int temp = Node::arrangements;
+            int temp = sum;
 
             Node node = Node(0, 0, minChar);
-            //node.findNext();
-
-            int total = Node::arrangements - temp;
+            sum += node.findNext();
             
-            cout << total << " perms" << endl;
+            cout << sum - temp << " perms" << endl;
             //cout << Node::arrangements << " total arrangements" << endl << endl;
         }
     }
 
-    cout << "Sum of calibration values: " << Node::arrangements << endl;
+    cout << "Sum of calibration values: " << sum << endl;
 
     return 0;
 }
