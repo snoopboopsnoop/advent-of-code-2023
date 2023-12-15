@@ -12,10 +12,6 @@ using namespace std;
 
 // uh oh i haven't programmed in c++ since may
 
-bool simplify(vector<int>& order, string& springs);
-bool simplifyLeft(vector<int>& order, string& springs);
-bool simplifyRight(vector<int>& order, string& springs);
-
 int main() {
     // input stream
     ifstream in("input.txt");
@@ -92,87 +88,4 @@ int main() {
     cout << "Sum of calibration values: " << Node::arrangements << endl;
 
     return 0;
-}
-
-bool simplify(vector<int>& order, string& springs) {
-    cout << springs << endl;
-
-    bool altered = simplifyLeft(order, springs);
-    cout << springs << endl;
-    altered = simplifyRight(order, springs) ? 1 : altered;
-
-    return altered;
-}
-
-bool simplifyLeft(vector<int>& order, string& springs) {
-    bool altered = false;
-
-    // from left
-    int curr = order.front();
-    int front = springs.front();
-    int end = springs.find('.');
-    int first = springs.find('#');
-    int last = (end != string::npos) ? springs.find_last_of('#', end) : -1;
-    
-    if(springs.size() == curr) {
-        springs.clear();
-        order.clear();
-    }
-
-    cout << "checking left edge" << endl;
-
-
-    if(springs[0] == '#') {
-        springs.erase(springs.begin(), springs.begin() + curr + 1);
-        order.erase(order.begin());
-        altered = true; 
-    }
-
-    if(end == curr) {
-        springs.erase(springs.begin(), springs.begin() + curr + 1);
-        order.erase(order.begin());
-        altered = true;
-    }
-
-    else if(springs[0] == '?' && springs[1] == '#') {
-        if(find_if(springs.begin() + 1, springs.begin() + curr + 1, [](char c) { return c != '#'; }) == springs.begin() + curr + 1) {
-            springs.erase(springs.begin(), springs.begin() + curr + 2);
-            order.erase(order.begin());
-            altered = true;
-        }
-    }
-
-    return altered;
-}
-
-bool simplifyRight(vector<int>& order, string& springs) {
-    bool altered = false;
-
-    cout << "checking rigth edge" << endl;
-    // from right
-    int curr = order.back();
-    int front = springs.rfind('.') + 1;
-    int end = springs.size() - 1;
-    int first = springs.find('#', front);
-    int last = springs.find_last_of('#');
-
-    if(front != 0) {
-        if(end - front + 1 == curr) {
-            auto found = find_if(springs.rbegin() + (end - front + 1), springs.rend(), [] (char c) { return c != '.'; });
-            int pos = (found).base() - springs.begin();
-            springs.erase(springs.begin() + pos, springs.end());
-            order.pop_back();
-            altered = true;
-        }
-
-        else if(springs[springs.size() - 1] == '?' && springs[springs.size() - 2] == '#') {
-            if(find_if(springs.rbegin() + 1, springs.rbegin() + curr + 1, [](char c){ return c != '#'; }) == springs.rbegin() + curr + 1) {
-                springs.erase((springs.rbegin() + curr + 2).base(), springs.end());
-                order.pop_back();
-                altered = true;
-            }
-        }
-    }
-
-    return altered;
 }
