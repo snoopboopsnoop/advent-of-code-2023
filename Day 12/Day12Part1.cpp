@@ -25,6 +25,7 @@ int main() {
     // read sum of calibration document values
     while(in) {
         while(getline(in, line)) {
+            Node::nodes.clear();
             vector<int> order;
             int validCount = 0;
 

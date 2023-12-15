@@ -17,7 +17,7 @@ struct Node {
     int orderPos;
     int springPos; // which index of the string does this node start with
     int sumGroups; // keeps track of minimum number of characters required
-    int localSum; // arrangements from this node
+    unsigned long long localSum; // arrangements from this node
 
     Node(int paramOPos, int paramSPos, int sum) {
         //nodes.erase(nodes.begin());
@@ -38,7 +38,7 @@ struct Node {
     }
 
 
-    int findNext() {
+    unsigned long long findNext() {
         if(springs.size() - springPos < sumGroups) return 0;
 
         size_t lineSize = springs.size();
@@ -75,8 +75,22 @@ struct Node {
                             
                             if((temp + order[orderPos + 1]) <= lineSize) {
                                 //cout << "new string starts at pos " << temp << endl;
-                                Node node = Node(orderPos + 1, temp, sumGroups);
-                                localSum += node.findNext();
+                                bool found = false;
+                                for(Node node : nodes) {
+                                    if(node.orderPos == orderPos + 1 && node.springPos == temp) {
+                                        //cout << "found existing node" << endl;
+                                        localSum += node.localSum;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if(!found) {
+                                    //cout << "doesn't exist" << endl;
+                                    Node node = Node(orderPos + 1, temp, sumGroups);
+                                    localSum += node.findNext();
+                                    //cout << springs.substr(temp) << " (" << order[orderPos + 1] << ") = " << result << endl;
+                                    nodes.push_back(node);
+                                }
                             }
                         }
                     }

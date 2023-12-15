@@ -20,12 +20,14 @@ int main() {
     if(!in) cerr << "oops tehre was a fucky wucky" << endl;
 
     string line;
-    long long sum = 0;
+    unsigned long long sum = 0;
 
     // read sum of calibration document values
     while(in) {
         int row = 0;
         while(getline(in, line)) {
+            Node::nodes.clear();
+
             vector<int> order;
             int validCount = 0;
 
@@ -75,19 +77,14 @@ int main() {
             Node::order = order;
             Node::springs = springs;
 
-            
-            for(char& c : springs) {
-                if(c == '#') c = '0';
-                else if(c == '.') c= '1';
-            }
 
-            cout << springs << endl;
+            cout << Node::springs << endl;
             for(int i : order) {
                 cout << i << ",";
             }
             cout << endl;
 
-            long long temp = sum;
+            unsigned long long temp = sum;
 
             Node node = Node(0, 0, minChar);
             sum += node.findNext();
