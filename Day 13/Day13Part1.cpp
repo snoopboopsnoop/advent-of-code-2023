@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// uh oh i haven't programmed in c++ since may
+// needed this one after day 12
 
 int findSymmetry(const vector<string>& map);
 void rotate(vector<string>& map);
@@ -20,7 +20,7 @@ int main() {
     string line;
     int sum = 0;
     
-    // read sum of calibration document values
+    // read each map and get values
     while(in) {
         vector<string> map;
 
@@ -34,21 +34,24 @@ int main() {
         }
 
         int rowsAbove = findSymmetry(map);
-        cout << rowsAbove << " rows above line of symmertry" << endl;
+        
 
-        rotate(map);
+        rotate(map); // rotate 90 degrees clockwise so the same algorithm will work
 
         int columnsLeft = findSymmetry(map);
-        cout << columnsLeft << " columns above line of symmetry" << endl << endl;
+
+        if(columnsLeft == 0) cout << rowsAbove << ((rowsAbove != 1) ? " rows " : " row ") << "above line of symmetry" << endl << endl;
+        else cout << columnsLeft << ((columnsLeft == 0) ? " columns " : " column ") << "above line of symmetry" << endl << endl;
         
         sum += 100 * rowsAbove + columnsLeft;
     }
 
-    cout << "Sum of calibration values: " << sum << endl;
+    cout << "Note summmary: " << sum << endl;
 
     return 0;
 }
 
+// returns number of columns or rows before the line of symmetry
 int findSymmetry(const vector<string>& map) {
     for(int i = 0; i < map.size(); ++i) {
         string line = map[i];
@@ -58,6 +61,7 @@ int findSymmetry(const vector<string>& map) {
             int leftPos = i;
             int rightPos = i + 1;
 
+            // spread out to check
             do {
                 --leftPos;
                 ++rightPos;
@@ -70,6 +74,7 @@ int findSymmetry(const vector<string>& map) {
     return 0;
 }
 
+// rotates map 90 degrees clockwise
 void rotate(vector<string>& map) {
     vector<string> temp(map[0].size());
 
@@ -79,11 +84,6 @@ void rotate(vector<string>& map) {
             temp[j].push_back(line[j]);
         }
     }
-    
-    // for(string line : temp) {
-    //     cout << line << endl;
-    // }
-    // cout << endl;
 
     map = temp;
 }
