@@ -43,12 +43,13 @@ struct Node {
         for(int i = springPos; i + num <= lineSize; ++i) {
             //cout << "spring size: " << springs.size() << endl;
             if(springs[i] != '.') {
-                // for(int i = 0; i < orderPos; ++i) {
-                //     cout << "\t";
-                // }
-                // cout << "looking at char " << springs[i] << " at pos " << i << endl;   
+                for(int i = 0; i < orderPos; ++i) {
+                    cout << "\t";
+                }
+                cout << "looking at char " << springs[i] << " at pos " << i << endl;   
                 //cout << "possible" << endl;
                 if(find(springs.begin() + i, springs.begin() + i + num, '.') == springs.begin() + i + num) {
+                    cout << "range works" << endl;
                     if((i + num) == lineSize || springs[i + num] == '.' || springs[i + num] == '?') {
                         if(i == 0 || springs[i - 1] == '.' || springs[i - 1] == '?') {
 
