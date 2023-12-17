@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// uh oh i haven't programmed in c++ since may
+// first day this year where my solution feels very breakable
 
 void rotate(vector<string>& map);
 
@@ -20,45 +20,43 @@ int main() {
     int sum = 0;
     vector<string> map;
 
-    // read sum of calibration document values
+    // read map into 2d vector
     while(in) {
         while(getline(in, line)) {
             if(line == "") break;
-            
             map.push_back(line);
         }
     }
 
-    rotate(map);
-
-    cout << "<-- north" << endl;
+    rotate(map); // rotated the map cuz processing easier but program slower but who cares
 
     for(string line : map) {
         cout << line << endl;
     }
 
     for(string line : map) {
-        cout << "looking at " << line << endl;
-        int limit = -1;
+        int limit = -1; // can go all the way to edge of map initially
+        // go through each rock in map and find end position
         for(int i = 0; i < line.size(); ++i) {
             char c = line[i];
             if(c == 'O') {
-                int cubePos = line.rfind('#', i);
-                if(cubePos > limit) limit = cubePos;
-                int stop = limit + 1;
-                cout << "rock at pos " << i << " stops at " << stop << " with load of " << line.size() - stop << endl;
-                limit = stop;
-                sum += line.size() - stop;
+                int cubePos = line.rfind('#', i); // check for cube rocks
+                if(cubePos > limit) limit = cubePos; // if cube rocks are closer than limit set it
+                int stop = limit + 1; // stops one index before limit
+                limit = stop; // new limit set to rock's stopping position
+                sum += line.size() - stop; // add weight of rock to sum
             }
         }
     }
 
+    cout << endl << "<-- north" << endl;
 
-    cout << "Sum of calibration values: " << sum << endl;
+    cout << endl << "Sum of calibration values: " << sum << endl;
 
     return 0;
 }
 
+// rotates 2d vector 90 degrees counter clockwise
 void rotate(vector<string>& map) {
     vector<string> temp(map[0].size());
 
