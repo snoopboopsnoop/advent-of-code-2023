@@ -2,3 +2,4 @@ input.txt
 output.exe
 .vscode/*
 debugging for friends/*
+.DS_Store
